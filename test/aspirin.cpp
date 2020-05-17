@@ -1,3 +1,4 @@
+#include <chrono>
 #include "emp-sh2pc/emp-sh2pc.h"
 using namespace emp;
 using namespace std;
@@ -28,7 +29,7 @@ void aspirin(int input_size_per_party, int patient_id_bits = 32, int timestamp_b
         Bit greaterThanNext = patient_id_concat_timestamp[i].geq(patient_id_concat_timestamp[i+1]);
         verifyOrder = verifyOrder & greaterThanNext;
     }
-    verifyOrder.reveal<std::string>(ALICE);
+    bool sorted = verifyOrder.reveal<bool>(ALICE);
 
     // Merge the two arrays, sorted ascending by patient_id_concat_timestamp
     bitonic_merge(patient_id_concat_timestamp, diagnosis, 0, input_array_length, true);
@@ -44,8 +45,11 @@ void aspirin(int input_size_per_party, int patient_id_bits = 32, int timestamp_b
         total.select(add, next);
     }
 
-    total.reveal<std::string>(ALICE);
+    std::uint32_t result = total.reveal<std::uint32_t>(ALICE);
     delete[] inputs;
+
+    cout << sorted << endl;
+    cout << result << endl;
 }
 
 int main(int argc, char** argv) {
@@ -55,7 +59,7 @@ int main(int argc, char** argv) {
     } else if (argc == 4) {
         size = atoi(argv[3]);
     } else {
-        cout << "Bad args" << endl;
+        cout << "Usage: " << argv[0] << " party port problem_size" << endl;
         return 1;
     }
 
@@ -65,7 +69,11 @@ int main(int argc, char** argv) {
 
     setup_semi_honest(io, party);
 
-    cout << "About to call aspirin" << endl;
+    auto start = std::chrono::steady_clock::now();
     aspirin(size);
+    auto end = std::chrono::steady_clock::now();
+
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    cerr << ms.count() << " ms" << endl;
     delete io;
 }
