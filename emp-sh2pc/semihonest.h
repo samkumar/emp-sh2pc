@@ -7,11 +7,11 @@ namespace emp {
 template<typename IO>
 inline void setup_semi_honest(IO* io, int party) {
 	if(party == ALICE) {
-		HalfGateGen<IO> * t = new HalfGateGen<IO>(io);
+		HalfGateGen<IO, off> * t = new HalfGateGen<IO, off>(io);
 		CircuitExecution::circ_exec = t;
 		ProtocolExecution::prot_exec = new SemiHonestGen<IO>(io, t);
 	} else {
-		HalfGateEva<IO> * t = new HalfGateEva<IO>(io);
+		HalfGateEva<IO, off> * t = new HalfGateEva<IO, off>(io);
 		CircuitExecution::circ_exec = t;
 		ProtocolExecution::prot_exec = new SemiHonestEva<IO>(io, t);
 	}

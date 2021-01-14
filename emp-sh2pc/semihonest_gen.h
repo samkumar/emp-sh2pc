@@ -11,8 +11,8 @@ public:
 	IO* io;
 	SHOTExtension<IO> * ot;
 	PRG prg, shared_prg;
-	HalfGateGen<IO> * gc;
-	SemiHonestGen(IO* io, HalfGateGen<IO>* gc): ProtocolExecution(ALICE) {
+	HalfGateGen<IO, off> * gc;
+	SemiHonestGen(IO* io, HalfGateGen<IO, off>* gc): ProtocolExecution(ALICE) {
 		this->io = io;
 		ot = new SHOTExtension<IO>(io);
 		this->gc = gc;	

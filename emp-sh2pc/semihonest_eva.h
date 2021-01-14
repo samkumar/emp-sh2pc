@@ -9,9 +9,9 @@ class SemiHonestEva: public ProtocolExecution {
 public:
 	IO* io = nullptr;
 	SHOTExtension<IO>* ot;
-	HalfGateEva<IO> * gc;
+	HalfGateEva<IO, off> * gc;
 	PRG shared_prg;
-	SemiHonestEva(IO *io, HalfGateEva<IO> * gc): ProtocolExecution(BOB) {
+	SemiHonestEva(IO *io, HalfGateEva<IO, off> * gc): ProtocolExecution(BOB) {
 		this->io = io;
 		ot = new SHOTExtension<IO>(io);
 		this->gc = gc;	
