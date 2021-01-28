@@ -17,8 +17,8 @@ void merge_sorted(int party, int input_size_per_party, int key_bits = 32, int va
             key[i] = Integer(key_bits, i, ALICE);
             value[i] = Integer(value_bits, i, ALICE);
         } else {
-            key[i] = Integer(key_bits, input_array_length - i - 1, BOB);
-            value[i] = Integer(value_bits, input_array_length - i - 1, BOB);
+            key[i] = Integer(key_bits, input_array_length - i - 1, ALICE);
+            value[i] = Integer(value_bits, input_array_length - i - 1, ALICE);
         }
     }
 
@@ -77,19 +77,16 @@ void merge_sorted(int party, int input_size_per_party, int key_bits = 32, int va
 }
 
 int main(int argc, char** argv) {
-    int size;
-    if (argc == 3) {
-        size = 128;
-    } else if (argc == 4) {
-        size = atoi(argv[3]);
-    } else {
-        cout << "Usage: " << argv[0] << " party port problem_size" << endl;
+    if (argc != 5) {
+        cout << "Usage: " << argv[0] << " party port problem_size other_ip" << endl;
         return 1;
     }
 
+    int size = atoi(argv[3]);
+
     int port, party;
     parse_party_and_port(argv, &party, &port);
-    NetIO * io = new NetIO(party==ALICE ? nullptr : "127.0.0.1", port);
+    NetIO * io = new NetIO(party==ALICE ? nullptr : argv[4], port);
 
     setup_semi_honest(io, party);
 
