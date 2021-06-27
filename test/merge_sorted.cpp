@@ -17,8 +17,8 @@ void merge_sorted(int party, int input_size_per_party, int key_bits = 32, int va
             key[i] = Integer(key_bits, i, ALICE);
             value[i] = Integer(value_bits, i, ALICE);
         } else {
-            key[i] = Integer(key_bits, input_array_length - i - 1, ALICE);
-            value[i] = Integer(value_bits, input_array_length - i - 1, ALICE);
+            key[i] = Integer(key_bits, input_array_length - i - 1, BOB);
+            value[i] = Integer(value_bits, input_array_length - i - 1, BOB);
         }
     }
 
